@@ -1,0 +1,129 @@
+﻿<div class="advance_slider_container">
+    <span>0</span>
+    <div id="{CONTROL_ID}_slider" class="advance_slider"></div>
+    <span>100</span>
+</div>
+<span class="advance_slider_output"><b id="{CONTROL_ID}_slider_display"></b></span>
+
+<link href="/fields/slider/css/jquery-ui.min.css" rel="stylesheet" />
+<style>
+    .advance_slider_container {
+        margin-bottom: 12px;
+    }
+    .advance_slider_container:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+    .advance_slider_container > span {
+        float: left;
+        margin: 0 15px 0 0;
+    }
+    .advance_slider_container > span:last-child {
+        float: left;
+        margin: 0 0 0 15px;
+    }
+    .advance_slider {
+        float: left;
+        width: 38%;
+        border: solid 1px #ccc;
+    }
+    .advance_slider .ui-slider-range {
+        background: #eee;
+    }
+    .advance_slider .ui-slider-handle {
+        background-color: #dc291e;
+        border: solid 1px #969696;
+        border-radius: 50%;
+    }
+    .advance_slider .ui-state-active {
+        background-color: #dc291e !important;
+        border-color: #dc291e !important;
+    }
+    .ui-widget .ui-widget {
+        font-size: 1.1em;
+        background-color: #fff;
+    }
+    span.ui-slider-handle.ui-corner-all.ui-state-default:focus {
+        outline: none;
+        box-shadow: 0px 0px 0px 1px #969696;
+    }
+    .advance_slider_output {
+        border: solid 1px #ccc;
+        padding: 5px;
+        background: #fff;
+    }
+</style>
+<script>
+    jQuery(document).ready(function ()
+    {
+        debugger;
+
+        var s = document.createElement("script");
+        s.type = "text/javascript";
+        s.src = "/fields/slider/js/jquery-ui.min.js";
+        jQuery("head").append(s);
+
+        function init()
+        {
+            var values = getValues();
+
+            if (values.from >= values.to)
+            {
+                return;
+            }
+
+            jQuery("#{CONTROL_ID}_slider").slider({
+                orientation: "horizontal",
+                min: "{FROM}" == "" ? 0 : parseInt("{FROM}"),
+                max: "{TO}" == "" ? 100 : parseInt("{TO}"),
+                value: getValidValue(),
+                range: "min",
+                slide: function ()
+                {
+                    var newValue = jQuery("#{CONTROL_ID}_slider").slider("value");
+                    jQuery("#{CONTROL_ID}_slider_display").text(newValue);
+                },
+                change: function ()
+                {
+                    var newValue = jQuery("#{CONTROL_ID}_slider").slider("value");
+                    jQuery("#{CONTROL_ID}_slider_display").text(newValue);
+                    return scForm.postEvent(this, event, "contentslider:move(id={CONTROL_ID},value=" + newValue + ")");
+                }
+            });
+        }
+
+        function getValidValue()
+        {
+            var values = getValues();
+
+            if (values.value >= values.from && values.value <= values.to)
+            {
+                return values.value;
+            }
+            else
+            {
+                // Reset value to sliders to new range minimum value.
+                scForm.postEvent(this, event, "contentslider:reset(id={CONTROL_ID},value=" + values.from + ")");
+
+                return values.from;
+            }
+        }
+
+        function getValues()
+        {
+            var from = "{FROM}" == "" ? 0 : parseInt("{FROM}");
+            var to = "{TO}" == "" ? 100 : parseInt("{TO}");
+            var number = "{VALUE}" == "" ? 0 : parseInt("{VALUE}");
+
+            return {
+                from: from,
+                to: to,
+                value: number
+            };
+        }
+
+        init();
+        jQuery("#{CONTROL_ID}_slider_display").text("{VALUE}" == "" ? 0 : parseInt("{VALUE}"));
+    });
+</script>
