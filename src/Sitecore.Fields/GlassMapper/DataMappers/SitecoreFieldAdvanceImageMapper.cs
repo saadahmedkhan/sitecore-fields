@@ -17,8 +17,8 @@ namespace Glass.Mapper.Sc.DataMappers
 
         public override object GetField(Field field, SitecoreFieldConfiguration config, SitecoreDataMappingContext context)
         {
-            ImageField scImg = new ImageField(field);
-            AdvanceImageField img = new AdvanceImageField();
+            var scImg = new ImageField(field);
+            var img = new AdvanceImageField();
 
             var xml = new XmlDocument();
             xml.LoadXml(scImg.Value);
