@@ -20,6 +20,12 @@
         return new HtmlString("No datasource set");
 
       var imageField = new ImageField(item.Fields[fieldName]);
+      
+      if (string.IsNullOrWhiteSpace(imageField.Value))
+                return new HtmlString("Image is not provided.");
+      
+      if (imageField.MediaItem == null)
+                return new HtmlString("Image Item is not found.");
 
       var xml = new XmlDocument();
       xml.LoadXml(imageField.Value);
