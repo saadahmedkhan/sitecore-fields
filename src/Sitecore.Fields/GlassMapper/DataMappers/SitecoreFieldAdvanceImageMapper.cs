@@ -2,7 +2,6 @@
 using Glass.Mapper.Sc.Fields;
 using Sitecore.Data.Fields;
 using Sitecore.Resources.Media;
-using Sitecore.Shell.Applications.ContentEditor;
 using System;
 using System.Xml;
 
@@ -11,7 +10,7 @@ namespace Glass.Mapper.Sc.DataMappers
     public class SitecoreFieldAdvanceImageMapper : AbstractSitecoreFieldMapper
     {
         public SitecoreFieldAdvanceImageMapper()
-            : base(typeof(AdvanceImage))
+            : base(typeof(AdvanceImageField))
         {
         }
 
